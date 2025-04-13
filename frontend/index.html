@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fawaz Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+    }
+    header {
+      background-color: #007BFF;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #007BFF;
+    }
+    input, button {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.6rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <script>
+    async function addStudent() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const res = await fetch("http://localhost:5000/api/admin/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email })
+      });
+      const data = await res.json();
+      alert("Student added: " + data.name);
+    }
+
+    async function uploadFile() {
+      const formData = new FormData();
+      formData.append("file", document.getElementById("file").files[0]);
+      const res = await fetch("http://localhost:5000/api/admin/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      alert("File uploaded: " + data.filename);
+    }
+  </script>
+</head>
+<body>
+  <header><h1>Admin Panel - Fawaz Madrasa</h1></header>
+  <main>
+    <h2>Add Student</h2>
+    <input type="text" id="name" placeholder="Name"/>
+    <input type="email" id="email" placeholder="Email"/>
+    <button onclick="addStudent()">Add Student</button>
+    <h2>Upload File</h2>
+    <input type="file" id="file"/>
+    <button onclick="uploadFile()">Upload File</button>
+  </main>
+</body>
+</html>
